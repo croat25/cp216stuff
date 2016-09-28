@@ -1,0 +1,353 @@
+00000400 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 3/20/2016 8:28:47 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Program    : q2
+00000000                             3  * Written by : david brown
+00000000                             4  * Date       : 2012-03-09; modified 2016-03-19
+00000000                             5  * Modified by:  bruno salapic
+00000000                             6  * Date       :
+00000000                             7  * Description: draws
+00000000                             8  *-----------------------------------------------------------
+00000000                             9              
+00000000                            10  redrec      incbin  'red_rectangle.bin'
+00000054                            11              
+00000054                            12              
+00000400                            13  START       ORG     $400
+00000400                            14  
+00000400                            15  *===========================================================
+00000400                            16  
+00000400                            17              
+00000400                            18             
+00000400                            19              
+00000400  43F9 008CA718             20              lea     rectangle,a1            
+00000406  22FC 00000064             21              move.l  #100,(a1)+              x
+0000040C  22FC 00000064             22              move.l  #100,(a1)+              y
+00000412  22FC 0000015E             23              move.l  #350,(a1)+              Width
+00000418  22BC 00000032             24              move.l  #50,(a1)                Height
+0000041E  43F9 00000590             25              lea     sb,a1                   
+00000424  22FC 00000258             26              move.l  #600,(a1)+              ;buffer width
+0000042A  22FC 00000190             27              move.l  #400,(a1)+              ;buffer height
+00000430  2F3C 00000001             28              move.l  #$01,-(sp)              Fill rectangle
+00000436  2F3C 00771177             29              move.l  #$00771177,-(sp)
+0000043C                            30              
+0000043C                            31              
+0000043C  4879 008CA718             32              pea     rectangle               ;push on stack 
+00000442  4879 00000590             33              pea     sb                      ; push sb on stack
+00000448  4EB9 008CA65A             34              jsr     fill                    ;go to subroutine
+0000044E  DFFC 00000010             35              adda.l  #16,sp
+00000454                            36  
+00000454  43F9 008CA718             37              lea     rectangle,a1            
+0000045A  22FC 00000096             38              move.l  #150,(a1)+              x
+00000460  22FC 00000064             39              move.l  #100,(a1)+              y
+00000466  22FC 00000032             40              move.l  #50,(a1)+               Width
+0000046C  22BC 0000015E             41              move.l  #350,(a1)               Height
+00000472  43F9 00000590             42              lea     sb,a1                   
+00000478  22FC 00000258             43              move.l  #600,(a1)+              ;buffer width
+0000047E  22FC 00000190             44              move.l  #400,(a1)+              ;buffer height
+00000484  2F3C 00000000             45              move.l  #$00,-(sp)              empty rectangle
+0000048A  2F3C 00777711             46              move.l  #$00777711,-(sp)
+00000490                            47              
+00000490                            48              
+00000490  4879 008CA718             49              pea     rectangle               ;push on stack 
+00000496  4879 00000590             50              pea     sb                      ; push sb on stack
+0000049C  4EB9 008CA65A             51              jsr     fill                    ;go to subroutine
+000004A2  DFFC 00000010             52              adda.l  #16,sp
+000004A8                            53              
+000004A8  43F9 008CA718             54              lea     rectangle,a1            
+000004AE  22FC 0000015E             55              move.l  #350,(a1)+              x
+000004B4  22FC 00000064             56              move.l  #100,(a1)+              y
+000004BA  22FC 0000015E             57              move.l  #350,(a1)+              Width
+000004C0  22BC 00000032             58              move.l  #50,(a1)                Height
+000004C6  43F9 00000590             59              lea     sb,a1                   
+000004CC  22FC 00000258             60              move.l  #600,(a1)+              ;buffer width
+000004D2  22FC 00000190             61              move.l  #400,(a1)+              ;buffer height
+000004D8  2F3C 00000001             62              move.l  #$01,-(sp)              Fill rectangle
+000004DE  2F3C 00117777             63              move.l  #$00117777,-(sp)
+000004E4                            64              
+000004E4                            65              
+000004E4  4879 008CA718             66              pea     rectangle               ;push on stack 
+000004EA  4879 00000590             67              pea     sb                      ; push sb on stack
+000004F0  4EB9 008CA65A             68              jsr     fill                    ;go to subroutine
+000004F6  DFFC 00000010             69              adda.l  #16,sp
+000004FC                            70              
+000004FC  43F9 008CA718             71              lea     rectangle,a1            
+00000502  22FC 00000064             72              move.l  #100,(a1)+              x
+00000508  22FC 00000190             73              move.l  #400,(a1)+              y
+0000050E  22FC 00000032             74              move.l  #50,(a1)+               Width
+00000514  22BC 0000015E             75              move.l  #350,(a1)               Height
+0000051A  43F9 00000590             76              lea     sb,a1                   
+00000520  22FC 00000258             77              move.l  #600,(a1)+              ;buffer width
+00000526  22FC 00000190             78              move.l  #400,(a1)+              ;buffer height
+0000052C  2F3C 00000000             79              move.l  #$00,-(sp)              empty rectangle
+00000532  2F3C 00117711             80              move.l  #$00117711,-(sp)
+00000538                            81              
+00000538                            82              
+00000538  4879 008CA718             83              pea     rectangle               ;push on stack 
+0000053E  4879 00000590             84              pea     sb                      ; push sb on stack
+00000544  4EB9 008CA65A             85              jsr     fill                    ;go to subroutine
+0000054A  DFFC 00000010             86              adda.l  #16,sp
+00000550  4879 00000590             87              pea     sb
+00000556  4EB9 008CA5C2             88              jsr     sb_dsp
+0000055C  DFFC 00000010             89              adda.l  #16,sp
+00000562                            90  *===========================================================
+00000562                            91              
+00000562                            92  * Display the screen buffer.
+00000562                            93   
+00000562                            94              
+00000562                            95  
+00000562  4E72 2700                 96              STOP    #$2700
+00000566                            97  
+00000566                            98  *-----------------------------------------------------------
+00000566                            99  * Includes
+00000566                           100              INCLUDE 'graphic_util.X68'
+00000566  48E7 8000                101  G_COLOR     MOVEM.L D0,-(SP)
+0000056A                           102  
+0000056A  7050                     103              MOVEQ.L #80,D0
+0000056C  4E4F                     104              TRAP    #15
+0000056E                           105  
+0000056E  4CDF 0001                106              MOVEM.L (SP)+,D0
+00000572  4E75                     107              RTS
+00000574                           108  
+00000574  48E7 8000                109  G_PIXEL     MOVEM.L D0,-(SP)
+00000578                           110  
+00000578  7052                     111              MOVEQ.L #82,D0
+0000057A  4E4F                     112              TRAP    #15
+0000057C                           113  
+0000057C  4CDF 0001                114              MOVEM.L (SP)+,D0
+00000580  4E75                     115              RTS
+00000582                           116  
+00000582  48E7 8000                117  G_SIZE      MOVEM.L D0,-(SP)
+00000586                           118  
+00000586  7021                     119              MOVEQ.L #33,D0
+00000588  4E4F                     120              TRAP    #15
+0000058A                           121  
+0000058A  4CDF 0001                122              MOVEM.L (SP)+,D0
+0000058E  4E75                     123              RTS
+00000590                           124  
+00000590                           125  
+00000590                           126  -------------------- end include --------------------
+00000590                           127              INCLUDE 'buffer_util2.X68'
+00000590  =00000780                128  SB_W_MAX    EQU     1920                    * Maximum width of the screen buffer.
+00000590  =000004B0                129  SB_H_MAX    EQU     1200                    * Maximum height of the screen buffer.
+00000590  =00232800                130  SB_S_MAX    EQU     SB_W_MAX*SB_H_MAX       * Maximum screen buffer size in pixels. 
+00000590                           131  
+00000590                           132  
+00000590                           133  
+00000590                           134  SB          DS.L    1                       * Screen Width in pixels.
+00000594                           135              DS.L    1                       * Screen Height in pixels.
+00000598                           136              DS.L    SB_S_MAX                * Screen buffer declared at maximum size.
+008CA598  =008CA598                137  SB_E        EQU     *                       * Screen buffer end address.
+008CA598                           138              
+008CA598                           139  
+008CA598                           140  
+008CA598  4E56 0000                141  SB_CLR      LINK    A6,#0
+008CA59C  48E7 70C0                142              MOVEM.L D1-D3/A0-A1,-(SP)
+008CA5A0                           143  
+008CA5A0  226E 0008                144              MOVE.L  8(A6),A1                * Set the screen buffer structure address.
+008CA5A4  222E 000C                145              MOVE.L  12(A6),D1               * Set the colour value.
+008CA5A8  2411                     146              MOVE.L  (A1),D2                 * Set the screen buffer width.
+008CA5AA  2629 0004                147              MOVE.L  4(A1),D3                * Set the screen buffer height.
+008CA5AE  C4C3                     148              MULU    D3,D2                   * Calculate size of actual screen buffer.
+008CA5B0  41E9 0008                149              LEA     8(A1),A0                * Set the address for the screen buffer image data.
+008CA5B4                           150  
+008CA5B4  20C1                     151  P_LOOP      MOVE.L  D1,(A0)+                * Set the pixel colour.
+008CA5B6  5382                     152              SUBQ.L  #1,D2                   * Decrement the pixel count.
+008CA5B8  6EFA                     153              BGT     P_LOOP                  * Pixels left?
+008CA5BA                           154              
+008CA5BA  4CDF 030E                155              MOVEM.L (SP)+,D1-D3/A0-A1
+008CA5BE  4E5E                     156              UNLK    A6
+008CA5C0  4E75                     157              RTS
+008CA5C2                           158  
+008CA5C2                           159  
+008CA5C2                           160  
+008CA5C2  4E56 0000                161  SB_DSP      LINK    A6,#0
+008CA5C6  48E7 F0C0                162              MOVEM.L D0-D3/A0-A1,-(SP)
+008CA5CA                           163  
+008CA5CA  226E 0008                164              MOVE.L  8(A6),A1                * Set the screen buffer structure address.
+008CA5CE  2211                     165              MOVE.L  (A1),D1                 * Set buffer width in low word of D1.
+008CA5D0  4841                     166              SWAP    D1                      * Move buffer height to high word of D1.
+008CA5D2  D2A9 0004                167              ADD.L   4(A1),D1                * Set buffer height in low word of D1.
+008CA5D6  4EB8 0582                168              JSR     G_SIZE                  * Set size of screen to match buffer size. (graphic_util.X68)
+008CA5DA                           169  
+008CA5DA  41E9 0008                170              LEA     8(A1),A0                * Set the screen buffer data address.
+008CA5DE                           171  
+008CA5DE  4282                     172              CLR.L   D2                      * Initialize Y position.
+008CA5E0                           173  
+008CA5E0  4281                     174  Y_LOOP      CLR.L   D1                      * Initialize X position.
+008CA5E2                           175  
+008CA5E2  C343                     176  X_LOOP      EXG     D1,D3                   * Preserve X position.
+008CA5E4                           177  
+008CA5E4                           178              * Set the output color - color stored in long word of screen buffer
+008CA5E4                           179              * in $00BBGGRR format. (Defined by EASy68K Simulator graphics tasks.)
+008CA5E4  7050                     180              MOVEQ.L #80,D0                  * Set color task number.
+008CA5E6  2218                     181              MOVE.L  (A0)+,D1                * Copy pixel color value to D1.
+008CA5E8  4E4F                     182              TRAP    #15                     * Set the pen color.
+008CA5EA  C343                     183              EXG     D1,D3                   * Return X position.
+008CA5EC                           184  
+008CA5EC  7052                     185              MOVEQ.L #82,D0                  * Set draw pixel task number.
+008CA5EE  4E4F                     186              TRAP    #15                     * Draw the pixel at X,Y.
+008CA5F0                           187              
+008CA5F0  5281                     188              ADDQ.L  #1,D1                   * Increment X.
+008CA5F2  B291                     189              CMP.L   (A1),D1                 * End of row?
+008CA5F4  6DEC                     190              BLT     X_LOOP                  *   No - move to next column.
+008CA5F6                           191  
+008CA5F6  5282                     192              ADDQ.L  #1,D2                   * Increment Y.
+008CA5F8  B4A9 0004                193              CMP.L   4(A1),D2                * End of image?
+008CA5FC  6DE2                     194              BLT     Y_LOOP                  *   No - move to next row.
+008CA5FE                           195              
+008CA5FE  4CDF 030F                196              MOVEM.L (SP)+,D0-D3/A0-A1
+008CA602  4E5E                     197              UNLK    A6
+008CA604  4E75                     198              RTS
+008CA606                           199  
+008CA606                           200  
+008CA606                           201  
+008CA606                           202  
+008CA606                           203  
+008CA606                           204  
+008CA606                           205  -------------------- end include --------------------
+008CA606                           206  RED_RECTANGLE
+008CA606                           207              INCBIN 'red_rectangle.bin'
+008CA65A                           208  
+008CA65A                           209              
+008CA65A  4E56 0000                210  fill        link    a6,#0
+008CA65E  48E7 FC7A                211              movem.l d0-d5/a1-a4/a6,-(sp)
+008CA662                           212              
+008CA662                           213              
+008CA662                           214             
+008CA662  246E 0008                215              move.l  8(a6),a2                
+008CA666  226E 000C                216              move.l  12(a6),a1
+008CA66A  282E 0014                217             move.l  20(a6),d4
+008CA66E  B8BC 00000000            218              cmp.l   #00,d4
+008CA674  6700 0042                219              beq     empty                   ;check to look at flag to see if empty or fill
+008CA678                           220     
+008CA678  4244                     221              clr     d4                      
+008CA67A                           222              
+008CA67A                           223             
+008CA67A  2829 000C                224              move.l  12(a1),d4               ;height
+008CA67E  2629 0008                225              move.l  8(a1),d3                ;width
+008CA682  2429 0004                226              move.l  4(a1),d2                ;y
+008CA686  2229 0000                227              move.l  0(a1),d1                ;x
+008CA68A  2C12                     228              move.l  (a2),d6                 
+008CA68C  C2C6                     229              mulu    d6,d1
+008CA68E  9C83                     230              sub.l   d3,d6
+008CA690  E58E                     231              lsl.l   #2,d6
+008CA692  E589                     232              lsl.l   #2,d1                   ;lsl for longword
+008CA694  E58A                     233              lsl.l   #2,d2                   
+008CA696                           234              
+008CA696  D282                     235              add.l   d2,d1
+008CA698  5384                     236              sub.l   #1,d4
+008CA69A  508A                     237              add.l   #8,a2
+008CA69C  D5C1                     238              add.l   d1,a2                   ; offset
+008CA69E                           239              
+008CA69E                           240             
+008CA69E                           241              
+008CA69E  2E03                     242  len         move.l  d3,d7
+008CA6A0  5387                     243              sub.l   #1,d7
+008CA6A2  24EE 0010                244  final       move.l  16(a6),(a2)+            ;load colours
+008CA6A6  51CF FFFA                245              dbra    d7,final                ;decrement branch 
+008CA6AA  D5C6                     246              adda.l  d6,a2
+008CA6AC  51CC FFF0                247              dbra    d4,len                  ; dbra
+008CA6B0  4CDF 5D3F                248              movem.l (sp)+,d0-d5/a0/a2-a4/a6
+008CA6B4  4E5E                     249              unlk    a6
+008CA6B6  4E75                     250              rts
+008CA6B8                           251  
+008CA6B8                           252  
+008CA6B8  4244                     253  empty       clr     d4
+008CA6BA                           254              
+008CA6BA  2829 000C                255              move.l  12(a1),d4               ;height
+008CA6BE  2629 0008                256              move.l  8(a1),d3                ;width
+008CA6C2  2429 0004                257              move.l  4(a1),d2                ;y
+008CA6C6  2229 0000                258              move.l  0(a1),d1                ;x      
+008CA6CA  2C12                     259              move.l  (a2),d6
+008CA6CC  C2C6                     260              mulu    d6,d1
+008CA6CE  2C12                     261              move.l  (a2),d6
+008CA6D0  9C83                     262              sub.l   d3,d6
+008CA6D2  E58E                     263              lsl.l   #2,d6                   ;lsl for longword
+008CA6D4  E589                     264              lsl.l   #2,d1
+008CA6D6  E58A                     265              lsl.l   #2,d2
+008CA6D8  D242                     266              add     d2,d1
+008CA6DA  5383                     267              sub.l   #1,d3
+008CA6DC  5384                     268              sub.l   #1,d4
+008CA6DE  D5C1                     269              add.l   d1,a2
+008CA6E0  508A                     270              add.l   #8,a2
+008CA6E2                           271              
+008CA6E2                           272              
+008CA6E2                           273             
+008CA6E2  24EE 0010                274  final1      move.l  16(a6),(a2)+
+008CA6E6  51CB FFFA                275              dbra    d3,final1                
+008CA6EA  D5C6                     276              adda.l  d6,a2
+008CA6EC  2629 0008                277  final2      move.l  8(a1),d3
+008CA6F0  24EE 0010                278              move.l  16(a6),(a2)+
+008CA6F4                           279              
+008CA6F4  2E03                     280              move.l  d3,d7
+008CA6F6  5547                     281              sub     #2,d7
+008CA6F8  E58F                     282              lsl.l   #2,d7
+008CA6FA  D5C7                     283              add.l   d7,a2
+008CA6FC  24EE 0010                284              move.l  16(a6),(a2)+
+008CA700  D5C6                     285              adda.l  d6,a2
+008CA702  51CC FFE8                286              dbra    d4,final2
+008CA706  5343                     287              sub     #1,d3
+008CA708                           288  
+008CA708  24EE 0010                289  border      move.l  16(a6),(a2)+
+008CA70C  51CB FFFA                290              dbra    d3,border               
+008CA710  4CDF 5D3F                291              movem.l (sp)+,d0-d5/a0/a2-a4/a6
+008CA714  4E5E                     292              unlk    a6
+008CA716  4E75                     293              rts            
+008CA718                           294              
+008CA718                           295              
+008CA718                           296              
+008CA718                           297              
+008CA718                           298  *-----------------------------------------------------------
+008CA718                           299  * DATA AREA
+008CA718                           300  *
+008CA718                           301  * Rectangle structure definition.
+008CA718                           302  *
+008CA718                           303  * Equivalent C Definition: 
+008CA718                           304  * typedef struct rectangleType {
+008CA718                           305  *    int32 x;
+008CA718                           306  *    int32 y;
+008CA718                           307  *    int32 width;
+008CA718                           308  *    int32 height;
+008CA718                           309  * } rectangleType;
+008CA718                           310  
+008CA718                           311  RECTANGLE   DS.L    1                       * x
+008CA71C                           312              DS.L    1                       * y
+008CA720                           313              DS.L    1                       * width
+008CA724                           314              DS.L    1                       * height
+008CA728                           315  
+008CA728                           316  
+008CA728                           317              END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BORDER              8CA708
+EMPTY               8CA6B8
+FILL                8CA65A
+FINAL               8CA6A2
+FINAL1              8CA6E2
+FINAL2              8CA6EC
+G_COLOR             566
+G_PIXEL             574
+G_SIZE              582
+LEN                 8CA69E
+P_LOOP              8CA5B4
+RECTANGLE           8CA718
+REDREC              0
+RED_RECTANGLE       8CA606
+SB                  590
+SB_CLR              8CA598
+SB_DSP              8CA5C2
+SB_E                8CA598
+SB_H_MAX            4B0
+SB_S_MAX            232800
+SB_W_MAX            780
+START               400
+X_LOOP              8CA5E2
+Y_LOOP              8CA5E0

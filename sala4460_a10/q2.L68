@@ -1,0 +1,160 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 3/27/2016 2:52:17 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a10q2
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2016/mar/26
+00000000                             5  * Description:q2
+00000000                             6  *-----------------------------------------------------------
+00000000  =00000280                  7  length      equ     640 
+00000000                             8  
+00000000                             9              org     $00
+00000000= 00001000                  10              dc.l    start
+00000004= 00001000                  11              dc.l    start
+00000008                            12              
+0000006C                            13              org     $6c
+0000006C= 0000104C                  14              dc.l    vertical
+00000070                            15              
+00000074                            16              org     $74
+00000074= 00001098                  17              dc.l    colourchange
+00000078                            18     
+00001000                            19  START:      org     $1000        ; first instruction of program
+00001000                            20  
+00001000  4EB9 000010EE             21              jsr clearscreen
+00001006  4EB9 000010F8             22              jsr enableexception             
+0000100C  4EB9 00001104             23              jsr drawcolour              main rountine
+00001012  4EB9 00001122             24              jsr setcoordinates                          
+00001018  4EB9 00001022             25              jsr     loop        
+0000101E                            26  
+0000101E  4E72 2700                 27  end         stop        #$2700
+00001022                            28  
+00001022  303C 0052                 29  loop        move    #82,d0
+00001026  4E4F                      30              trap    #15
+00001028                            31              
+00001028  B27C 0280                 32              cmp     #length,d1          ; compare the length if eq then new line
+0000102C  6700 0016                 33              beq     newline
+00001030  5241                      34              addq     #1,d1
+00001032  2E3C 00003FFF             35              move.l  #$3fff,d7      
+00001038  BEBC 00000000             36  delay       cmp.l   #0,d7                   ;delay looop
+0000103E  57CF FFF8                 37              dbeq    d7,delay
+00001042  60DE                      38              bra     loop     
+00001044  323C 0000                 39  newline         move.w    #0,d1
+00001048  5242                      40                  addq.w    #1,d2                 
+0000104A  60D6                      41                  bra     loop
+0000104C                            42  
+0000104C  3601                      43  vertical    move    d1,d3
+0000104E  383C 0000                 44              move    #0,d4
+00001052                            45              
+00001052  4EB9 00001112             46              jsr     settocolor          ;set colour
+00001058                            47              
+00001058  303C 0052                 48  draw        move    #82,d0
+0000105C  4E4F                      49              trap    #15                 draw
+0000105E  B4BC 00000280             50              cmp.l   #640,d2
+00001064  67B8                      51                  beq     end 
+00001066  B8BC 00000050             52                  cmp.l   #80,d4
+0000106C  6700 0018                 53                  beq     verticalend 
+00001070                            54              
+00001070  5242                      55               addq    #1,d2
+00001072  5244                      56              addq     #1,d4
+00001074  2E3C 00003FFF             57              move.l  #$3fff,d7
+0000107A  BEBC 00000000             58  stall       cmp.l   #0,d7
+00001080  57CF FFF8                 59              dbeq    d7,stall
+00001084  60D2                      60              bra     draw 
+00001086  3601                      61  verticalend move    d1,d3               ;draw it to screen
+00001088  303C 0050                 62              move    #80,d0
+0000108C  223C 0000FF00             63              move.l  #$0000ff00,d1
+00001092  4E4F                      64              trap    #15
+00001094  3203                      65              move    d3,d1
+00001096  4E73                      66              rte
+00001098                            67  
+00001098  3601                      68  colourchange    move    d1,d3               
+0000109A  383C 0000                 69                  move    #0,d4
+0000109E  4EB9 0000112C             70                  jsr settocolor2             ; color change
+000010A4  303C 0052                 71  horiz2          move        #82,d0  
+000010A8  4E4F                      72                  trap    #15
+000010AA                            73                  
+000010AA  B27C 0280                 74                  cmp #640,d1
+000010AE  6700 0024                 75                  beq newlinesamecolour       newline same colour if the line extends past to the right and not 
+000010B2  B47C 0280                 76                  cmp #640,d2                 enough pixels have been drawn then make new line and still use the colour intended for the 
+000010B6                            77                  
+000010B6  6700 FF66                 78                  beq end                 remaining pixels
+000010BA  B87C 0050                 79                  cmp #80,d4
+000010BE  6700 001C                 80                  beq sendtorte
+000010C2  5241                      81                  addq #1,d1
+000010C4  5244                      82                  addq #1,d4
+000010C6  3E3C 3FFF                 83                  move    #$3fff,d7
+000010CA  BE7C 0000                 84  stall2                cmp #0,d7
+000010CE  57CF FFFA                 85                  dbeq    d7,stall2           delay loopp
+000010D2  60D0                      86                  bra horiz2
+000010D4                            87                  
+000010D4  323C 0000                 88  newlinesamecolour   move    #0,d1
+000010D8  5242                      89                      addq #1,d2
+000010DA  60C8                      90                      bra horiz2
+000010DC  3601                      91  sendtorte       move    d1,d3
+000010DE  303C 0050                 92                  move    #80,d0
+000010E2  223C 0000FF00             93                  move.l  #$0000ff00,d1
+000010E8  4E4F                      94                  trap    #15
+000010EA  3203                      95                  move    d3,d1
+000010EC  4E73                      96                   rte
+000010EE                            97      
+000010EE  323C FF00                 98  clearscreen     move.w  #$ff00,d1
+000010F2  700B                      99                  moveq    #11,d0
+000010F4  4E4F                     100                  trap    #15
+000010F6  4E75                     101                  rts
+000010F8                           102                  
+000010F8  123C 0005                103  enableexception move.b  #5,d1
+000010FC  103C 0020                104                  move.b  #32,d0
+00001100  4E4F                     105                  trap    #15
+00001102  4E75                     106                  rts
+00001104                           107                  
+00001104  223C 0000FF00            108  drawcolour      move.l    #$0000ff00,d1
+0000110A  103C 0050                109                  move.b      #80,d0
+0000110E  4E4F                     110                  trap    #15
+00001110  4E75                     111                  rts                    
+00001112  303C 0050                112  settocolor      move    #80,d0
+00001116  223C 000000FF            113                  move.l  #$000000ff,d1
+0000111C  4E4F                     114                  trap    #15
+0000111E  3203                     115                  move    d3,d1
+00001120  4E75                     116                  rts
+00001122                           117  setcoordinates
+00001122  323C 0000                118                  move    #0,d1           
+00001126  343C 0000                119                  move    #0,d2 
+0000112A  4E75                     120                  rts
+0000112C                           121  
+0000112C  223C 00808080            122  settocolor2     move.l  #$00808080,d1
+00001132  303C 0050                123                  move    #80,d0
+00001136  4E4F                     124                  trap    #15
+00001138  3203                     125                  move    d3,d1
+0000113A  4E75                     126                  rts 
+0000113C                           127                 END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CLEARSCREEN         10EE
+COLOURCHANGE        1098
+DELAY               1038
+DRAW                1058
+DRAWCOLOUR          1104
+ENABLEEXCEPTION     10F8
+END                 101E
+HORIZ2              10A4
+LENGTH              280
+LOOP                1022
+NEWLINE             1044
+NEWLINESAMECOLOUR   10D4
+SENDTORTE           10DC
+SETCOORDINATES      1122
+SETTOCOLOR          1112
+SETTOCOLOR2         112C
+STALL               107A
+STALL2              10CA
+START               1000
+VERTICAL            104C
+VERTICALEND         1086

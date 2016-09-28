@@ -1,0 +1,445 @@
+00000400 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 3/20/2016 8:33:49 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Program    : q3
+00000000                             3  * Written by : bruno salapic
+00000000                             4  * Date       : 2012-03-09; modified 2016-03-19
+00000000                             5  * Modified by:
+00000000                             6  * Date       :
+00000000                             7  * Description: Writes a red rectangle to the screen buffer.
+00000000                             8  *-----------------------------------------------------------
+00000400                             9              ORG     $400
+00000400                            10  START       
+00000400                            11  
+00000400                            12  *===========================================================
+00000400                            13  nextround
+00000400  4282                      14              clr.l   d2
+00000402  4283                      15              clr.l   d3
+00000404  4284                      16              clr.l   d4
+00000406  4281                      17              clr.l     d1
+00000408  43F9 008CA77C             18              lea     entry,a1                ; get entry
+0000040E  4EB9 008CA554             19              jsr     p_str                   ;prt str
+00000414  4EB9 008CA592             20              jsr     readnum                 ;get num
+0000041A                            21             
+0000041A  2F01                      22              move.l  d1,-(sp)
+0000041C  4EB9 008CA592             23              jsr     readnum                 ;get num store on stakc
+00000422  2F01                      24              move.l  d1,-(sp)
+00000424  2F39 008CA7FA             25              move.l  output,-(sp)
+0000042A  4EB9 008CA640             26              jsr     max
+00000430                            27              
+00000430  4282                      28              clr.l   d2
+00000432  4283                      29              clr.l   d3
+00000434  4284                      30              clr.l   d4
+00000436  4281                      31              clr.l     d1
+00000438  43F9 008CA77C             32              lea     entry,a1                ; get entry
+0000043E  4EB9 008CA554             33              jsr     p_str                   ;prt str
+00000444  4EB9 008CA592             34              jsr     readnum                 ;get num
+0000044A                            35             
+0000044A  2F01                      36              move.l  d1,-(sp)
+0000044C  4EB9 008CA592             37              jsr     readnum                 ;get num store on stakc
+00000452  2F01                      38              move.l  d1,-(sp)
+00000454  2F39 008CA7FA             39              move.l  output,-(sp)
+0000045A  4EB9 008CA640             40              jsr     max
+00000460                            41              
+00000460  4282                      42              clr.l   d2
+00000462  4283                      43              clr.l   d3
+00000464  4284                      44              clr.l   d4
+00000466  4281                      45              clr.l     d1
+00000468  43F9 008CA77C             46              lea     entry,a1                ; get entry
+0000046E  4EB9 008CA554             47              jsr     p_str                   ;prt str
+00000474  4EB9 008CA592             48              jsr     readnum                 ;get num
+0000047A                            49             
+0000047A  2F01                      50              move.l  d1,-(sp)
+0000047C  4EB9 008CA592             51              jsr     readnum                 ;get num store on stakc
+00000482  2F01                      52              move.l  d1,-(sp)
+00000484  2F39 008CA7FA             53              move.l  output,-(sp)
+0000048A  4EB9 008CA640             54              jsr     max
+00000490                            55  *===========================================================
+00000490  6000 FF6E                 56              bra     nextround
+00000494                            57  * Display the screen buffer.
+00000494                            58              
+00000494                            59              
+00000494  4E72 2700                 60              STOP    #$2700
+00000498                            61  
+00000498                            62  *-----------------------------------------------------------
+00000498                            63  * Includes
+00000498                            64              INCLUDE 'graphic_util.X68'
+00000498  48E7 8000                 65  G_COLOR     MOVEM.L D0,-(SP)
+0000049C                            66  
+0000049C  7050                      67              MOVEQ.L #80,D0
+0000049E  4E4F                      68              TRAP    #15
+000004A0                            69  
+000004A0  4CDF 0001                 70              MOVEM.L (SP)+,D0
+000004A4  4E75                      71              RTS
+000004A6                            72  
+000004A6  48E7 8000                 73  G_PIXEL     MOVEM.L D0,-(SP)
+000004AA                            74  
+000004AA  7052                      75              MOVEQ.L #82,D0
+000004AC  4E4F                      76              TRAP    #15
+000004AE                            77  
+000004AE  4CDF 0001                 78              MOVEM.L (SP)+,D0
+000004B2  4E75                      79              RTS
+000004B4                            80  
+000004B4  48E7 8000                 81  G_SIZE      MOVEM.L D0,-(SP)
+000004B8                            82  
+000004B8  7021                      83              MOVEQ.L #33,D0
+000004BA  4E4F                      84              TRAP    #15
+000004BC                            85  
+000004BC  4CDF 0001                 86              MOVEM.L (SP)+,D0
+000004C0  4E75                      87              RTS
+000004C2                            88  
+000004C2                            89  
+000004C2                            90  -------------------- end include --------------------
+000004C2                            91              INCLUDE 'buffer_util2.X68'
+000004C2  =00000780                 92  SB_W_MAX    EQU     1920                    * Maximum width of the screen buffer.
+000004C2  =000004B0                 93  SB_H_MAX    EQU     1200                    * Maximum height of the screen buffer.
+000004C2  =00232800                 94  SB_S_MAX    EQU     SB_W_MAX*SB_H_MAX       * Maximum screen buffer size in pixels. 
+000004C2                            95  
+000004C2                            96  
+000004C2                            97  
+000004C2                            98  SB          DS.L    1                       * Screen Width in pixels.
+000004C6                            99              DS.L    1                       * Screen Height in pixels.
+000004CA                           100              DS.L    SB_S_MAX                * Screen buffer declared at maximum size.
+008CA4CA  =008CA4CA                101  SB_E        EQU     *                       * Screen buffer end address.
+008CA4CA                           102              
+008CA4CA                           103  
+008CA4CA                           104  
+008CA4CA  4E56 0000                105  SB_CLR      LINK    A6,#0
+008CA4CE  48E7 70C0                106              MOVEM.L D1-D3/A0-A1,-(SP)
+008CA4D2                           107  
+008CA4D2  226E 0008                108              MOVE.L  8(A6),A1                * Set the screen buffer structure address.
+008CA4D6  222E 000C                109              MOVE.L  12(A6),D1               * Set the colour value.
+008CA4DA  2411                     110              MOVE.L  (A1),D2                 * Set the screen buffer width.
+008CA4DC  2629 0004                111              MOVE.L  4(A1),D3                * Set the screen buffer height.
+008CA4E0  C4C3                     112              MULU    D3,D2                   * Calculate size of actual screen buffer.
+008CA4E2  41E9 0008                113              LEA     8(A1),A0                * Set the address for the screen buffer image data.
+008CA4E6                           114  
+008CA4E6  20C1                     115  P_LOOP      MOVE.L  D1,(A0)+                * Set the pixel colour.
+008CA4E8  5382                     116              SUBQ.L  #1,D2                   * Decrement the pixel count.
+008CA4EA  6EFA                     117              BGT     P_LOOP                  * Pixels left?
+008CA4EC                           118              
+008CA4EC  4CDF 030E                119              MOVEM.L (SP)+,D1-D3/A0-A1
+008CA4F0  4E5E                     120              UNLK    A6
+008CA4F2  4E75                     121              RTS
+008CA4F4                           122  
+008CA4F4                           123  
+008CA4F4                           124  
+008CA4F4  4E56 0000                125  SB_DSP      LINK    A6,#0
+008CA4F8  48E7 F0C0                126              MOVEM.L D0-D3/A0-A1,-(SP)
+008CA4FC                           127  
+008CA4FC  226E 0008                128              MOVE.L  8(A6),A1                * Set the screen buffer structure address.
+008CA500  2211                     129              MOVE.L  (A1),D1                 * Set buffer width in low word of D1.
+008CA502  4841                     130              SWAP    D1                      * Move buffer height to high word of D1.
+008CA504  D2A9 0004                131              ADD.L   4(A1),D1                * Set buffer height in low word of D1.
+008CA508  4EB8 04B4                132              JSR     G_SIZE                  * Set size of screen to match buffer size. (graphic_util.X68)
+008CA50C                           133  
+008CA50C  41E9 0008                134              LEA     8(A1),A0                * Set the screen buffer data address.
+008CA510                           135  
+008CA510  4282                     136              CLR.L   D2                      * Initialize Y position.
+008CA512                           137  
+008CA512  4281                     138  Y_LOOP      CLR.L   D1                      * Initialize X position.
+008CA514                           139  
+008CA514  C343                     140  X_LOOP      EXG     D1,D3                   * Preserve X position.
+008CA516                           141  
+008CA516                           142              * Set the output color - color stored in long word of screen buffer
+008CA516                           143              * in $00BBGGRR format. (Defined by EASy68K Simulator graphics tasks.)
+008CA516  7050                     144              MOVEQ.L #80,D0                  * Set color task number.
+008CA518  2218                     145              MOVE.L  (A0)+,D1                * Copy pixel color value to D1.
+008CA51A  4E4F                     146              TRAP    #15                     * Set the pen color.
+008CA51C  C343                     147              EXG     D1,D3                   * Return X position.
+008CA51E                           148  
+008CA51E  7052                     149              MOVEQ.L #82,D0                  * Set draw pixel task number.
+008CA520  4E4F                     150              TRAP    #15                     * Draw the pixel at X,Y.
+008CA522                           151              
+008CA522  5281                     152              ADDQ.L  #1,D1                   * Increment X.
+008CA524  B291                     153              CMP.L   (A1),D1                 * End of row?
+008CA526  6DEC                     154              BLT     X_LOOP                  *   No - move to next column.
+008CA528                           155  
+008CA528  5282                     156              ADDQ.L  #1,D2                   * Increment Y.
+008CA52A  B4A9 0004                157              CMP.L   4(A1),D2                * End of image?
+008CA52E  6DE2                     158              BLT     Y_LOOP                  *   No - move to next row.
+008CA530                           159              
+008CA530  4CDF 030F                160              MOVEM.L (SP)+,D0-D3/A0-A1
+008CA534  4E5E                     161              UNLK    A6
+008CA536  4E75                     162              RTS
+008CA538                           163  
+008CA538                           164  
+008CA538                           165  
+008CA538                           166  
+008CA538                           167  
+008CA538                           168  
+008CA538                           169  -------------------- end include --------------------
+008CA538                           170              include 'io_util.x68'
+008CA538  48E7 8000                171  P_PRMPT     MOVEM.L D0,-(SP)                Preserve D0
+008CA53C  7012                     172              MOVEQ.L #18,D0                  Set up prompt and read number into D1.L
+008CA53E  4E4F                     173              TRAP    #15
+008CA540  4CDF 0001                174              MOVEM.L (SP)+,D0                Restore D0
+008CA544  4E75                     175              RTS
+008CA546                           176  
+008CA546  48E7 8000                177  P_NUM       MOVEM.L D0,-(SP)                Preserve D0
+008CA54A  7011                     178              MOVEQ   #17,D0                  Set up to print D1.L without CR/LF
+008CA54C  4E4F                     179              TRAP    #15                     Print the number
+008CA54E  4CDF 0001                180              MOVEM.L (SP)+,D0                Restore D0
+008CA552  4E75                     181              RTS
+008CA554                           182              
+008CA554  48E7 8000                183  P_STR       MOVEM.L D0,-(SP)                Preserve D0
+008CA558  700D                     184              MOVEQ   #13,D0                  Set up to print string at A1 with CR/LF
+008CA55A  4E4F                     185              TRAP    #15                     Print the string
+008CA55C  4CDF 0001                186              MOVEM.L (SP)+,D0                Restore D0
+008CA560  4E75                     187              RTS
+008CA562                           188  
+008CA562  48E7 8040                189  P_CRLF      MOVEM.L D0/A1,-(SP)             Preserve D0 and A1
+008CA566  700D                     190              MOVEQ.L #13,D0                  Set up print with CRLF
+008CA568  43F9 008CA5EA            191              LEA     NULL,A1                 Set null string
+008CA56E  4E4F                     192              TRAP    #15
+008CA570  4CDF 0201                193              MOVEM.L (SP)+,D0/A1             Restore D0 and A1
+008CA574  4E75                     194              RTS
+008CA576                           195  
+008CA576  48E7 8000                196  P_STRNR     MOVEM.L D0,-(SP)                Preserve D0
+008CA57A  700E                     197              MOVEQ   #14,D0                  Set up to print string at A1 with CR/LF
+008CA57C  4E4F                     198              TRAP    #15                     Print the string
+008CA57E  4CDF 0001                199              MOVEM.L (SP)+,D0                Restore D0
+008CA582  4E75                     200              RTS
+008CA584                           201  
+008CA584  48E7 8000                202  P_CHAR      MOVEM.L D0,-(SP)
+008CA588  7005                     203              MOVEQ.L #5,D0
+008CA58A  4E4F                     204              TRAP    #15
+008CA58C  4CDF 0001                205              MOVEM.L (SP)+,D0
+008CA590  4E75                     206              RTS
+008CA592                           207              
+008CA592  48E7 8000                208  readnum     MOVEM.L D0,-(SP)
+008CA596  7004                     209              MOVEQ.L #4,D0
+008CA598  4E4F                     210              TRAP    #15
+008CA59A  4CDF 0001                211              MOVEM.L (SP)+,D0
+008CA59E  4E75                     212              RTS
+008CA5A0  48E7 8000                213  displaynum  MOVEM.L D0,-(SP)
+008CA5A4  7003                     214              MOVEQ.L #3,D0
+008CA5A6  4E4F                     215              TRAP    #15
+008CA5A8  4CDF 0001                216              MOVEM.L (SP)+,D0
+008CA5AC  4E75                     217              RTS
+008CA5AE  48E7 8000                218  P_RSTR      MOVEM.L D0,-(SP)                Preserve D0
+008CA5B2  7002                     219              MOVEQ   #2,D0                   Set up to read string into (A1)
+008CA5B4  4E4F                     220              TRAP    #15                     Read the string
+008CA5B6  4CDF 0001                221              MOVEM.L (SP)+,D0                Restore D0
+008CA5BA  4E75                     222              RTS
+008CA5BC                           223  
+008CA5BC  48E7 C000                224  P_ECHO_ON   MOVEM.L D0-D1,-(SP)
+008CA5C0                           225  
+008CA5C0  7201                     226              MOVEQ.L #1,D1
+008CA5C2  700C                     227              MOVEQ.L #12,D0
+008CA5C4  4E4F                     228              TRAP    #15
+008CA5C6                           229  
+008CA5C6  4CDF 0003                230              MOVEM.L (SP)+,D0-D1
+008CA5CA  4E75                     231              RTS
+008CA5CC                           232  
+008CA5CC  48E7 C000                233  P_ECHO_OFF  MOVEM.L D0-D1,-(SP)
+008CA5D0                           234  
+008CA5D0  7200                     235              MOVEQ.L #0,D1
+008CA5D2  700C                     236              MOVEQ.L #12,D0
+008CA5D4  4E4F                     237              TRAP    #15
+008CA5D6                           238  
+008CA5D6  4CDF 0003                239              MOVEM.L (SP)+,D0-D1
+008CA5DA  4E75                     240              RTS
+008CA5DC                           241  
+008CA5DC  48E7 8000                242  P_DCHAR     MOVEM.L D0,-(SP)
+008CA5E0                           243  
+008CA5E0  7006                     244              MOVEQ.L #6,D0
+008CA5E2  4E4F                     245              TRAP    #15
+008CA5E4                           246  
+008CA5E4  4CDF 0001                247              MOVEM.L (SP)+,D0
+008CA5E8  4E75                     248              RTS
+008CA5EA                           249  
+008CA5EA= 00                       250  NULL        DC.B    0                       * Empty string
+008CA5EB                           251  
+008CA5EB                           252  
+008CA5EB                           253  
+008CA5EB                           254  
+008CA5EB                           255  
+008CA5EB                           256  -------------------- end include --------------------
+008CA5EB                           257              
+008CA5EB                           258  RED_RECTANGLE
+008CA5EB                           259              INCBIN 'red_rectangle.bin'
+008CA63F                           260  
+008CA640  4E56 0000                261  max            link    a6,#0
+008CA644  48E7 7FE0                262           movem.l d1-d7/a0-a2,-(sp)
+008CA648  242E 0010                263              move.l  16(a6),d2
+008CA64C  222E 000C                264              move.l  12(a6),d1               ; stack frame
+008CA650  262E 0008                265              move.l  8(a6),d3
+008CA654                           266              
+008CA654  B2BC 00000000            267              cmp.l   #0,d1
+008CA65A  6D00 0046                268              blt     magnitude
+008CA65E  B4BC 00000000            269              cmp.l   #0,d2                   ; compare to see if to negate
+008CA664  6D00 0042                270              blt     magnitude2
+008CA668  B2BC 88888888            271              cmp.l   #$88888888,d1
+008CA66E  6E00 003E                272              bgt     magnitude3              
+008CA672  B4BC 88888888            273              cmp.l   #$88888888,d2
+008CA678  6E00 0042                274              bgt     magnitude4
+008CA67C                           275              
+008CA67C  B282                     276  backhere            cmp.l     d2,d1
+008CA67E  6700 00DE                277              beq     same                    ; compare to see if equal or lower or greater
+008CA682  B481                     278              cmp.l     d1,d2
+008CA684  6D00 0076                279              blt     dee1
+008CA688  B481                     280              cmp.l     d1,d2
+008CA68A  6E00 0086                281              bgt     dee2
+008CA68E  B282                     282              cmp.l   d2,d1
+008CA690  6E00 00B2                283              bgt     dee3                    
+008CA694  B282                     284              cmp.l   d2,d1
+008CA696  6D00 0094                285              blt     dee4
+008CA69A                           286              
+008CA69A  48E7 7FE0                287  begin            movem.l d1-d7/a0-a2,-(sp)
+008CA69E  4E5E                     288              unlk    a6
+008CA6A0  4E75                     289              rts
+008CA6A2                           290              
+008CA6A2                           291              
+008CA6A2                           292              
+008CA6A2                           293              
+008CA6A2  7601                     294  magnitude   move.l  #1,d3
+008CA6A4  6000 0024                295              bra     after                   ;set flags
+008CA6A8  7602                     296  magnitude2  move.l  #2,d3
+008CA6AA  6000 001E                297              bra     after
+008CA6AE  B2BC 88888888            298  magnitude3  cmp.l   #$88888888,d1
+008CA6B4  6D00 00B6                299              blt     setflag1
+008CA6B8  6000 0010                300  backset     bra     after
+008CA6BC  B4BC 88888888            301  magnitude4  cmp.l   #$88888888,d2           ;setflags
+008CA6C2  6D00 00B0                302              blt     setflag2
+008CA6C6  6000 0002                303  backset1            bra     after
+008CA6CA  B6BC 00000001            304  after            cmp.l   #1,d3
+008CA6D0  6700 000E                305              beq     negate1
+008CA6D4  B6BC 00000002            306              cmp.l   #2,d3
+008CA6DA  6700 0012                307              beq     negate2
+008CA6DE  609C                     308              bra     backhere                ;check to see which ones to negate
+008CA6E0  7600                     309  negate1     move.l    #0,d3
+008CA6E2  3A01                     310              move    d1,d5
+008CA6E4  4281                     311              clr.l     d1                    ; negate shit
+008CA6E6  4445                     312              neg     d5
+008CA6E8  3205                     313              move.w  d5,d1
+008CA6EA  6000 0010                314              bra     dee1
+008CA6EE                           315  
+008CA6EE  7600                     316  negate2     move.l    #0,d3
+008CA6F0  3A02                     317              move    d2,d5
+008CA6F2  4282                     318              clr.l     d2
+008CA6F4  4445                     319              neg     d5
+008CA6F6  3405                     320              move.w  d5,d2
+008CA6F8  6000 0018                321              bra     dee2       
+008CA6FC                           322              
+008CA6FC  2601                     323  dee1        move.l  d1,d3
+008CA6FE  43F9 008CA7BD            324              lea     max1,a1
+008CA704  4EB9 008CA554            325              jsr     p_str
+008CA70A  4EB9 008CA5A0            326              jsr     displaynum
+008CA710  6088                     327              bra     begin
+008CA712  2202                     328  dee2        move.l    d2,d1                 ; different prints
+008CA714  2602                     329              move.l  d2,d3
+008CA716  43F9 008CA7BD            330              lea     max1,a1
+008CA71C  4EB9 008CA554            331              jsr     p_str
+008CA722  4EB9 008CA5A0            332              jsr     displaynum
+008CA728  6000 FF70                333              bra     begin
+008CA72C  2602                     334  dee4        move.l  d2,d3
+008CA72E  43F9 008CA7BD            335              lea     max1,a1
+008CA734  4EB9 008CA554            336              jsr     p_str
+008CA73A  4EB9 008CA5A0            337              jsr     displaynum
+008CA740  6000 FF58                338              bra     begin
+008CA744  2201                     339  dee3        move.l    d1,d1
+008CA746  2601                     340              move.l  d1,d3
+008CA748  43F9 008CA7BD            341              lea     max1,a1
+008CA74E  4EB9 008CA554            342              jsr     p_str
+008CA754  4EB9 008CA5A0            343              jsr     displaynum
+008CA75A  6000 FF3E                344              bra     begin            
+008CA75E  43F9 008CA7D2            345  same        lea     samestr,a1
+008CA764  4EB9 008CA554            346              jsr     p_str
+008CA76A  4E75                     347              rts     
+008CA76C                           348              
+008CA76C                           349              
+008CA76C  363C 0001                350  setflag1    move    #1,d3
+008CA770  6000 FF46                351              bra      backset
+008CA774  363C 0002                352  setflag2    move    #2,d3
+008CA778  6000 FF4C                353              bra     backset1           
+008CA77C                           354  *-----------------------------------------------------------
+008CA77C                           355  * DATA AREA
+008CA77C                           356  *
+008CA77C                           357  * Rectangle structure definition.
+008CA77C                           358  *
+008CA77C                           359  * Equivalent C Definition: 
+008CA77C                           360  * typedef struct rectangleType {
+008CA77C                           361  *    int32 x;
+008CA77C                           362  *    int32 y;
+008CA77C                           363  *    int32 width;
+008CA77C                           364  *    int32 height;
+008CA77C                           365  * } rectangleType;
+008CA77C                           366  
+008CA77C                           367  
+008CA77C= 65 6E 74 65 72 20 ...    368  entry      dc.b      'enter in a two numbers to see max absolute range between 1-128: ',0
+008CA7BD= 6D 61 78 20 6F 66 ...    369  max1         dc.b    'max of the two is : ',0
+008CA7D2= 73 61 6D 65 20 73 ...    370  samestr     dc.b    'same same but different but still same',0
+008CA7F9                           371  
+008CA7F9                           372  
+008CA7FA                           373  output      ds.l    1
+008CA7FE                           374  table       DS.L    1                       
+008CA802                           375              DS.L    1                       
+008CA806                           376              DS.L    1                       
+008CA80A                           377              DS.L    1                       
+008CA80E                           378              ds.l    1                       
+008CA812                           379  
+008CA812                           380              END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+AFTER               8CA6CA
+BACKHERE            8CA67C
+BACKSET             8CA6B8
+BACKSET1            8CA6C6
+BEGIN               8CA69A
+DEE1                8CA6FC
+DEE2                8CA712
+DEE3                8CA744
+DEE4                8CA72C
+DISPLAYNUM          8CA5A0
+ENTRY               8CA77C
+G_COLOR             498
+G_PIXEL             4A6
+G_SIZE              4B4
+MAGNITUDE           8CA6A2
+MAGNITUDE2          8CA6A8
+MAGNITUDE3          8CA6AE
+MAGNITUDE4          8CA6BC
+MAX                 8CA640
+MAX1                8CA7BD
+NEGATE1             8CA6E0
+NEGATE2             8CA6EE
+NEXTROUND           400
+NULL                8CA5EA
+OUTPUT              8CA7FA
+P_CHAR              8CA584
+P_CRLF              8CA562
+P_DCHAR             8CA5DC
+P_ECHO_OFF          8CA5CC
+P_ECHO_ON           8CA5BC
+P_LOOP              8CA4E6
+P_NUM               8CA546
+P_PRMPT             8CA538
+P_RSTR              8CA5AE
+P_STR               8CA554
+P_STRNR             8CA576
+READNUM             8CA592
+RED_RECTANGLE       8CA5EB
+SAME                8CA75E
+SAMESTR             8CA7D2
+SB                  4C2
+SB_CLR              8CA4CA
+SB_DSP              8CA4F4
+SB_E                8CA4CA
+SB_H_MAX            4B0
+SB_S_MAX            232800
+SB_W_MAX            780
+SETFLAG1            8CA76C
+SETFLAG2            8CA774
+START               400
+TABLE               8CA7FE
+X_LOOP              8CA514
+Y_LOOP              8CA512

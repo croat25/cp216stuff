@@ -1,0 +1,80 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 3/27/2016 2:44:49 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :a10q1
+00000000                             3  * Written by :Bruno Salapic 
+00000000                             4  * Date       :2016/mar/26
+00000000                             5  * Description:q
+00000000                             6  *-----------------------------------------------------------
+00000000                             7      org $0
+00000000= 00001000                   8      dc.l    start
+00000004= 00001000                   9      dc.l    start
+00000008                            10      
+00000008                            11      
+00001000                            12  START:      org     $1000        ; first instruction of program
+00001000  4EB9 0000104C             13              jsr     clearscreen     ; clearing the screen
+00001006  4EB9 00001058             14              jsr     enableexception     ; enable exceptions
+0000100C  4EB9 00001064             15              jsr     drawcolour          ;drawcolor
+00001012  4EB9 00001072             16              jsr     setcoordinates      
+00001018  4EB9 00001022             17              jsr     loop            ;loopfunction to executre main part of program
+0000101E                            18                          
+0000101E                            19              
+0000101E  4E72 2700                 20              stop        #$2700
+00001022                            21  
+00001022  303C 0052                 22  loop        move    #82,d0          ;draw pixel in pen color
+00001026  4E4F                      23              trap    #15             
+00001028                            24              
+00001028  B27C 0280                 25              cmp     #640,d1         ; see if it reaches the end of the screen then new line start on left side 1 pixel under neat
+0000102C  6600 000A                 26              bne     nextpixel
+00001030  323C 0000                 27              move    #0,d1
+00001034  5242                      28              addq    #1,d2
+00001036  60EA                      29              bra     loop
+00001038                            30              
+00001038                            31              
+00001038  5241                      32  nextpixel   addq.w  #1,d1       ; next pixel
+0000103A  2E3C 00008FFF             33              move.l  #$8FFF,d7
+00001040  BEBC 00000000             34  delay       cmp.l   #0,d7
+00001046  57CF FFF8                 35              dbeq    d7,delay        ;delay loop week 2 stuff
+0000104A  60D6                      36              bra     loop 
+0000104C                            37  
+0000104C                            38  
+0000104C  323C FF00                 39  clearscreen     move.w  #$ff00,d1
+00001050  303C 000B                 40                  move    #11,d0
+00001054  4E4F                      41                  trap    #15             ;clear screen subroutine
+00001056  4E75                      42                  rts
+00001058                            43                  
+00001058  123C 0005                 44  enableexception move.b  #5,d1           ;enable exceptions subroutine
+0000105C  103C 0020                 45                  move.b  #32,d0
+00001060  4E4F                      46                  trap    #15
+00001062  4E75                      47                  rts
+00001064                            48                  
+00001064  223C 0033AA22             49  drawcolour      move.l    #$0033aa22,d1         ;draw color
+0000106A  103C 0050                 50                  move.b      #80,d0
+0000106E  4E4F                      51                  trap    #15
+00001070  4E75                      52                  rts                    
+00001072                            53  
+00001072                            54  setcoordinates
+00001072  323C 0000                 55                  move    #0,d1           
+00001076  343C 0000                 56                  move    #0,d2 
+0000107A  4E75                      57                  rts               
+0000107C                            58  * Put variables and constants here
+0000107C                            59  
+0000107C                            60      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CLEARSCREEN         104C
+DELAY               1040
+DRAWCOLOUR          1064
+ENABLEEXCEPTION     1058
+LOOP                1022
+NEXTPIXEL           1038
+SETCOORDINATES      1072
+START               1000
